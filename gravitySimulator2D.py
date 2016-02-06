@@ -51,11 +51,11 @@ class Ball(object):
 		else:
 			self.radius = radius
 		if dx == None:
-			self.dx = random.uniform (-50, 50)
+			self.dx = random.uniform (-25, 25)
 		else:
 			self.dx = dx
 		if dy == None:
-			self.dy = random.uniform (-50, 50)
+			self.dy = random.uniform (-25, 25)
 		else:
 			self.dy = dy
 
@@ -63,7 +63,7 @@ class Ball(object):
 		if ((self.xy[1] + self.radius) < screenSize[1]):
 			self.xy[0] += self.dx
 			self.xy[1] += self.dy
-		self.dx -= self.dx/10
+		self.dx -= self.dx/100
 		self.dy += 1
 
 	def draw(self, surface):
