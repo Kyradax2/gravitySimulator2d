@@ -66,7 +66,10 @@ class Ball:
 		if ((self.xy[0] > board.xy[0] - self.radius and self.xy[0] < board.xy[0] + self.radius or self.xy[0] > board.xy[0] + board.width - self.radius and self.xy[0] < board.xy[0] + board.width + self.radius) and self.xy[1] > board.xy[1] and self.xy[1] < board.xy[1] + board.height):
 			self.dx *= -1
 		if ((self.xy[1] > board.xy[1] - self.radius and self.xy[1] < board.xy[1] + self.radius) and self.xy[0] > board.xy[0] and self.xy[0] < board.xy[0] + board.width):
-			self.dy *= -0.1
+			if (self.dy < 1 and self.dy > -1):
+				self.dy *= -0.1
+			else:
+				self.dy = 0
 			self.dx -= self.dx/10
 
 	def draw(self, surface):
