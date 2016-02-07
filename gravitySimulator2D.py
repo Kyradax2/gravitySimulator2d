@@ -21,29 +21,15 @@ except ImportError, err:
 #screen size
 screenSize = [800, 600]
 
-#turns float into integer
+#turn float into integer
 def rndint(num):
 	return int(round(num))
-
-#load image and return image object
-def load_png(name):
-        fullname = os.path.join('data', name)
-        try:
-                image = pygame.image.load(fullname)
-                if image.get_alpha is None:
-                        image = image.convert()
-                else:
-                        image = image.convert_alpha()
-        except pygame.error, message:
-                print 'Cannot load image:', fullname
-                raise SystemExit, message
-        return image, image.get_rect()
 
 #the ball class affected by gravity
 class Ball:
 	def __init__(self, xy = None, radius = None, dx = None, dy = None):
 		if xy == None:
-			self.xy = [random.uniform(100, screenSize[0] - 100), random.uniform(100, screenSize[1] - 100)]
+			self.xy = [random.uniform(100, screenSize[0] - 100), random.uniform(100, screenSize[1] - 500)]
 		else:
 			self.xy = xy
 		if radius == None:
@@ -59,29 +45,60 @@ class Ball:
 		else:
 			self.dy = dy
 
+#moves the ball
 	def update(self):
+		#apply the ball related force vector to the current position
 		self.xy[0] += self.dx
 		self.xy[1] += self.dy
+		#check if the ball hits the ground
 		if ((self.xy[1] + self.radius) > screenSize[1]):
 			self.dy *= -0.5
 			self.dx -= self.dx/10
 		else:
 			self.dy += 1
+			self.dy -= self.dy/100
 			self.dx -= self.dx/100
+		#check if the ball hits the screen's sides
 		if ((self.xy[0] + self.radius) < 0 or (self.xy[0] + self.radius) > screenSize[0]):
 			self.dx *= -1
+		#process the event related to a collision with the Board class
+		#FIXME: some balls still interact weirdly with the board
+		if ((self.xy[0] > board.xy[0] - self.radius and self.xy[0] < board.xy[0] + self.radius or self.xy[0] > board.xy[0] + board.width - self.radius and self.xy[0] < board.xy[0] + board.width + self.radius) and self.xy[1] > board.xy[1] and self.xy[1] < board.xy[1] + board.height):
+			self.dx *= -1
+		if ((self.xy[1] > board.xy[1] - self.radius and self.xy[1] < board.xy[1] + self.radius) and self.xy[0] > board.xy[0] and self.xy[0] < board.xy[0] + board.width):
+			self.dy *= -0.1
+			self.dx -= self.dx/10
 
 	def draw(self, surface):
 		pygame.draw.circle(surface, (255,255,127), (rndint(self.xy[0]), rndint(self.xy[1])), rndint(self.radius), 0)
+
+#an immobile object class where the balls can collide
+class Board:
+	def __init__(self, xy = None, width = None, height = None):
+		if xy == None:
+			self.xy = (300, 400)
+		else:
+			self.xy = xy
+		if width == None:
+			self.width = 200
+		else:
+			self.width = width
+		if height == None:
+			self.height = 50
+		else:
+			self.height = height
+
+	def draw(self, surface):
+		pygame.draw.rect(surface, (255,127,255), (self.xy[0], self.xy[1], self.width, self.height), 0)
 
 def main():
 	#centers the window on the computer screen
 	os.environ['SDL_VIDEO_CENTERED'] = '1'
 
-        #initialise screen
-        pygame.init()
-        screen = pygame.display.set_mode(screenSize)
-        pygame.display.set_caption('gravitySimulator2D')
+	#initialise screen
+	pygame.init()
+	screen = pygame.display.set_mode(screenSize)
+	pygame.display.set_caption('gravitySimulator2D')
 
 	#fill background
 	global background
@@ -134,12 +151,15 @@ def main():
 
 	#creating objects
 	balls = [Ball() for i in range (ballsCount)]
+	global board #declared global because used in the Ball() class
+	board = Board()
 
 	#initialise clock
 	clock = pygame.time.Clock()
 
+	#start the gravity simulation
 	while True:
-		clock.tick(45)
+		clock.tick(30)
 		for event in pygame.event.get():
 			if event.type == QUIT:
 				pygame.quit()
@@ -151,6 +171,7 @@ def main():
 		for b in balls:
 			b.update()
 			b.draw(background)
+		board.draw(background)
 
 		screen.blit(background, (0, 0))
 		pygame.display.flip()
