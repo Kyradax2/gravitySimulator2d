@@ -40,7 +40,7 @@ def load_png(name):
         return image, image.get_rect()
 
 #the ball class affected by gravity
-class Ball(object):
+class Ball:
 	def __init__(self, xy = None, radius = None, dx = None, dy = None):
 		if xy == None:
 			self.xy = [random.uniform(100, screenSize[0] - 100), random.uniform(100, screenSize[1] - 100)]
