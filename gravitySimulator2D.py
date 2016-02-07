@@ -60,11 +60,16 @@ class Ball(object):
 			self.dy = dy
 
 	def update(self):
-		if ((self.xy[1] + self.radius) < screenSize[1]):
-			self.xy[0] += self.dx
-			self.xy[1] += self.dy
-		self.dx -= self.dx/100
-		self.dy += 1
+		self.xy[0] += self.dx
+		self.xy[1] += self.dy
+		if ((self.xy[1] + self.radius) > screenSize[1]):
+			self.dy *= -0.5
+			self.dx -= self.dx/10
+		else:
+			self.dy += 1
+			self.dx -= self.dx/100
+		if ((self.xy[0] + self.radius) < 0 or (self.xy[0] + self.radius) > screenSize[0]):
+			self.dx *= -1
 
 	def draw(self, surface):
 		pygame.draw.circle(surface, (255,255,127), (rndint(self.xy[0]), rndint(self.xy[1])), rndint(self.radius), 0)
@@ -134,7 +139,7 @@ def main():
 	clock = pygame.time.Clock()
 
 	while True:
-		clock.tick(60)
+		clock.tick(45)
 		for event in pygame.event.get():
 			if event.type == QUIT:
 				pygame.quit()
