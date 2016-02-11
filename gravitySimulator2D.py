@@ -55,14 +55,13 @@ class Ball:
 			self.dy *= -0.5
 			self.dx -= self.dx/10
 		else:
-			self.dy += 0.1
+			self.dy += 0.3
 			self.dy -= self.dy/100
 			self.dx -= self.dx/100
 		#check if the ball hits the screen's sides
 		if ((self.xy[0] + self.radius) < 0 or (self.xy[0] + self.radius) > screenSize[0]):
 			self.dx *= -1
 		#process the event related to a collision with the Board class
-		#FIXME: some balls still interact weirdly with the board
 		if ((self.xy[0] > board.xy[0] - self.radius and self.xy[0] < board.xy[0] + self.radius or self.xy[0] > board.xy[0] + board.width - self.radius and self.xy[0] < board.xy[0] + board.width + self.radius) and self.xy[1] > board.xy[1] and self.xy[1] < board.xy[1] + board.height):
 			self.dx *= -1
 		if ((self.xy[1] > board.xy[1] - self.radius and self.xy[1] < board.xy[1] + self.radius) and self.xy[0] > board.xy[0] and self.xy[0] < board.xy[0] + board.width):
@@ -79,11 +78,11 @@ class Ball:
 class Board:
 	def __init__(self, xy = None, width = None, height = None):
 		if xy == None:
-			self.xy = (300, 400)
+			self.xy = (250, 400)
 		else:
 			self.xy = xy
 		if width == None:
-			self.width = 200
+			self.width = 300
 		else:
 			self.width = width
 		if height == None:
@@ -130,7 +129,7 @@ def main():
 
 	#some variables
 	start = 0
-	ballsCount = 100
+	ballsCount = 200
 
 	#ignore mouse motion (greatly reduces resources when not needed)
 	pygame.event.set_blocked(pygame.MOUSEMOTION)
@@ -162,7 +161,7 @@ def main():
 
 	#start the gravity simulation
 	while True:
-		clock.tick(120)
+		clock.tick(60)
 		for event in pygame.event.get():
 			if event.type == QUIT:
 				pygame.quit()
