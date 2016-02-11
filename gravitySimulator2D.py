@@ -52,7 +52,7 @@ class Ball:
 		self.xy[1] += self.dy
 		#check if the ball hits the ground
 		if ((self.xy[1] + self.radius) > screenSize[1]):
-			self.dy *= -0.7
+			self.dy *= -0.55
 			self.dx -= self.dx/10
 		else:
 			self.dy += 0.3
@@ -68,7 +68,7 @@ class Ball:
 			if (self.dy < 1 and self.dy > -1):
 				self.dy = 0
 			else:
-				self.dy *= -0.7
+				self.dy *= -0.55
 			self.dx -= self.dx/10
 
 	def draw(self, surface):
