@@ -37,7 +37,7 @@ class Ball:
 		else:
 			self.radius = radius
 		if dx == None:
-			self.dx = random.uniform (-5, 5)
+			self.dx = random.uniform (-15, 15)
 		else:
 			self.dx = dx
 		if dy == None:
@@ -52,7 +52,7 @@ class Ball:
 		self.xy[1] += self.dy
 		#check if the ball hits the ground
 		if ((self.xy[1] + self.radius) > screenSize[1]):
-			self.dy *= -0.5
+			self.dy *= -0.7
 			self.dx -= self.dx/10
 		else:
 			self.dy += 0.3
@@ -66,9 +66,9 @@ class Ball:
 			self.dx *= -1
 		if ((self.xy[1] > board.xy[1] - self.radius and self.xy[1] < board.xy[1] + self.radius) and self.xy[0] > board.xy[0] and self.xy[0] < board.xy[0] + board.width):
 			if (self.dy < 1 and self.dy > -1):
-				self.dy *= -0.1
-			else:
 				self.dy = 0
+			else:
+				self.dy *= -0.7
 			self.dx -= self.dx/10
 
 	def draw(self, surface):
