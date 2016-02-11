@@ -37,11 +37,11 @@ class Ball:
 		else:
 			self.radius = radius
 		if dx == None:
-			self.dx = random.uniform (-25, 25)
+			self.dx = random.uniform (-5, 5)
 		else:
 			self.dx = dx
 		if dy == None:
-			self.dy = random.uniform (-25, 25)
+			self.dy = random.uniform (-5, 5)
 		else:
 			self.dy = dy
 
@@ -55,7 +55,7 @@ class Ball:
 			self.dy *= -0.5
 			self.dx -= self.dx/10
 		else:
-			self.dy += 1
+			self.dy += 0.1
 			self.dy -= self.dy/100
 			self.dx -= self.dx/100
 		#check if the ball hits the screen's sides
@@ -162,7 +162,7 @@ def main():
 
 	#start the gravity simulation
 	while True:
-		clock.tick(30)
+		clock.tick(120)
 		for event in pygame.event.get():
 			if event.type == QUIT:
 				pygame.quit()
